@@ -1,0 +1,35 @@
+// console.log("hello")
+// var user = require("./user")
+// console.log(user)
+// console.log(user.userAge)
+// console.log(user.userName)
+// user.printUserData(100)
+
+
+
+
+
+
+
+
+
+app.get("/test",(req,res)=>{
+
+    console.group("test api port")
+
+    res.send("Hello test api called")
+})
+
+
+
+app.get("/user",(req,res)=>{
+
+      res.json({
+          message:"user api called...",
+          data:["ram","shyam"]
+})
+
+
+})
+
+

@@ -1,0 +1,18 @@
+# Ignore node modules
+node_modules/
+
+# Ignore environment variables
+.env
+
+# Ignore upload folders or temp files
+uploads/
+
+# Ignore log files
+*.log
+
+# macOS system files (optional)
+.DS_Store
+
+.uploads/
+
+
