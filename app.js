@@ -8,15 +8,44 @@ const ordersRoute = require("./src/routes/OrderRoutes");
 console.log(" BACKEND STARTED - CORS TEST ACTIVE");
 
 const app = express();
+
+// CORS Configuration
+const corsOptions = {
+  origin: [
+    "https://innovative-product.vercel.app",
+    "https://innovative-product-frontend.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:3001",
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(require("cors")(corsOptions));
+
+// Alternative custom CORS middleware (backup)
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+  const allowedOrigins = [
+    "https://innovative-product.vercel.app",
+    "https://innovative-product-frontend.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:3001",
+  ];
 
-  if (origin && origin.endsWith(".vercel.app")) {
+  if (allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS",
+    );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization",
+    );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
   }
-
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
