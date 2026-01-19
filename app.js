@@ -1,12 +1,11 @@
+require("dotenv").config();
 const express = require("express"); //express
 const mongoose = require("mongoose");
 const cors = require("cors");
-import dotenv from "dotenv";
 const ordersRoute = require("./src/routes/OrderRoutes");
 //express object
 
 console.log(" BACKEND STARTED - CORS TEST ACTIVE");
-dotenv.config();
 
 const app = express();
 app.use((req, res, next) => {
