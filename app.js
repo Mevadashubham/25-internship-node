@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express"); //express
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const ordersRoute = require("./src/routes/OrderRoutes");
 //express object
@@ -22,37 +23,8 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(require("cors")(corsOptions));
-
-// Alternative custom CORS middleware (backup)
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  const allowedOrigins = [
-    "https://innovative-product.vercel.app",
-    "https://innovative-product-frontend.vercel.app",
-    "http://localhost:3000",
-    "http://localhost:3001",
-  ];
-
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS",
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization",
-    );
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-  }
-
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
+// Apply CORS middleware FIRST - before any routes
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
