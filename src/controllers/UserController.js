@@ -5,6 +5,52 @@ const bcrypt = require("bcrypt");
 const mailUtil = require("../utils/MailUtil");
 const jwt = require("jsonwebtoken");
 const sectret = process.env.SECRET;
+const multer = require("multer");
+const path = require("path");
+
+const cloudinaryUtil = require("../utils/CloudanryUtil");
+
+
+// Multer Setup
+const storage = multer.diskStorage({
+  destination: "./uploads", // temp storage
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage }).single("avatar");
+
+// Controller to handle update with avatar
+const updateUserWithAvatar = (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) return res.status(500).json({ message: "Upload error", err });
+
+    try {
+      const userId = req.params.id;
+
+      let imageUrl = null;
+      if (req.file) {
+        const uploaded = await cloudinaryUtil.uploadFileToCloudinary(req.file);
+        imageUrl = uploaded.secure_url;
+      }
+
+      const updatedData = { ...req.body };
+      if (imageUrl) updatedData.profileImageURL = imageUrl;
+
+      const updatedUser = await userModel.findByIdAndUpdate(userId, updatedData, { new: true });
+
+      res.status(200).json({
+        message: "Profile updated with avatar!",
+        data: updatedUser,
+      });
+    } catch (error) {
+      console.error("Avatar upload error:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  });
+};
+
+
 
 const loginUser = async (req, res) => {
   
@@ -135,6 +181,16 @@ res.json({
 
 })
 }
+// PUT /user/update/:id
+const updateUser = async (req, res) => {
+  try {
+    const updated = await userModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json({ message: "Profile updated", updatedUser: updated });
+  } catch (err) {
+    res.status(500).json({ message: "Update failed", error: err.message });
+  }
+};
+
 
 
 module.exports = {
@@ -146,6 +202,9 @@ module.exports = {
   loginUser,
   forgotPassword,
   resetpassword,
+  updateUser,
+  updateUserWithAvatar,
+ 
 };
 
 

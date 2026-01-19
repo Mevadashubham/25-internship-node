@@ -27,7 +27,10 @@ const userSchema = new Schema({
     email:{
         type:String,
         unique:true
-    }
+    },
+    profileImageURL: {
+        type: String,
+    },
 
 })
 

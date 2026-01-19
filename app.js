@@ -21,7 +21,7 @@ const stateRoutes = require("./src/routes/StateRoutes")
 app.use("/state",stateRoutes)
 
 
-const cityRoutes = require("./src/routes/CityRoutes")
+const cityRoutes = require("./src/routes/CityRoutes") 
 app.use("/city",cityRoutes)
 
 
