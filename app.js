@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express"); //express
 const mongoose = require("mongoose");
-const cors = require("cors");
+
 const ordersRoute = require("./src/routes/OrderRoutes");
 //express object
 
@@ -9,7 +9,10 @@ console.log(" BACKEND STARTED - CORS TEST ACTIVE");
 
 const app = express();
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://innovative-product.vercel.app",
+  );
   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
