@@ -1,10 +1,23 @@
 const express = require("express"); //express
 const mongoose = require("mongoose");
 const cors = require("cors");
+import dotenv from "dotenv";
 const ordersRoute = require("./src/routes/OrderRoutes");
 //express object
+
+dotenv.config();
+
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+app.options("*", (req, res) => {
+  res.sendStatus(200);
+});
 app.use(express.json());
 
 //import role routes
